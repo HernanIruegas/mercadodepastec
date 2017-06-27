@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Encuentra</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="shortcut icon" href="images/favico.ico">
+	<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css"  href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script type="text/javascript" src="jQuery/jquery.js"></script>
+	<script type="text/javascript" src="js/indexjs.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCPkWmUcfyfhk6qY9AlRnxfutGMI_nYtRA"></script>
+    
+  	
+  	<script type="text/javascript" src="js/mapa.js"></script> 
+  	<script type="text/javascript" src="js/EncuentraJS.js"></script>
+    <script type="text/javascript" src="js/listaFavoritos.js"></script>
+    <script type="text/javascript" src="js/rommies.js"></script>
+
+
+</head>
+
+<body>
+	<p class="hiddenElement" id="SessionEmail"></p>
+	<nav class="navbar navbar-default navbar-fixed-top dark-primary-color">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">Mercado de Depas Tec</a>
+	    </div>
+	    <ul class="nav navbar-nav" style="text-align: : center">
+	      <li><a href="index.html">Inicio</a></li>
+	      <li class="active"><a href="Encuentra.html">Encuentra</a></li>
+	      <li><a href="Publica.html">Publica</a></li>
+	    </ul>
+	    <!-- Botones de iniciar sesión y crear cuenta -->
+	    <ul id="LogButtons" class="nav navbar-nav navbar-right text-primary-color">
+      	 <li><a class="btn" data-toggle="modal" data-target="#CrearCuenta"><span class="glyphicon glyphicon-user"></span> Crear cuenta</a></li>
+     	 <li><a class="btn" data-toggle="modal" data-target="#IniciarSesion"><span class="glyphicon glyphicon-log-in"></span> Iniciar sesión</a></li>
+    	</ul>
+    	<ul id="LoggedInButtons" class="nav navbar-nav navbar-right text-primary-color hiddenElement">
+      	 <li><a class="btn" id="LoggedNombre"></a></li>
+     	 <li><a class="btn" id="LogOutButton"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
+    	</ul>
+	  </div>
+	</nav>
+	
+	<br><br>
+        
+	<nav class= "navEncuentra ">
+		<ul id="subnav">
+			<li class="Mapa selected">Mapa</li>
+			<li class="Lista">Lista</li>
+			<li class="Favoritos">Favoritos</li>
+			<li class="Roomies">Roomies</li>
+		</ul>
+	</nav>
+
+    <div id="wrapperEncuentra">
+    
+	<div id="filtros">
+	<fieldset>
+			<h4>Filtros de búsqueda</h4>
+			<div class="form-group">
+				      <label for="minprecio">Precio mínimo: </label><span id="minprecioError" class="error hiddenElement"> Campo obligatorio</span>
+				      <input placeholder="Precio en pesos"  type="number" class="form-control" id="minprecio" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+			</div>
+			<div class="form-group">
+				      <label for="maxprecio">Precio máximo: </label><span id="maxprecioError" class="error hiddenElement"> Campo obligatorio</span>
+				      <input placeholder="Precio en pesos"  type="number" class="form-control" id="maxprecio" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+			</div>
+			<div class="form-group">
+				      <label for="distance">Distancia máxima al Tec: </label><span id="distanceError" class="error hiddenElement"><br> Campo obligatorio</span>
+				      <input placeholder="Distancia en metros"  type="number" class="form-control" id="distance" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+			</div>
+			<div class="form-group">
+				      <label for="rooms">Número de recámaras: </label><span id="roomsError" class="error hiddenElement"><br> Campo obligatorio</span>
+				      <input placeholder="Número de recámaras"  type="number" class="form-control" id="rooms" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+			</div>
+			<div class="form-group">
+				      <label for="Tipo">Tipo: </label>
+				      <p>
+				      <input type="radio" value="C" name="Tipo"> Casa
+				      <input type="radio" value="D" name="Tipo"> Departamento
+				      <input type="radio" value="T" name="Tipo" checked="checked"> Cualquiera
+				      </p>
+			</div>
+			<div class="form-group">
+				      <label for="Parking">Lugar de estacionamiento: </label>
+				      <p style="text-align: center">
+				      <input type="radio" value="Y" name="Parking"> Si
+				      <input type="radio" value="T" name="Parking" checked="checked"> Indiferente
+				      </p>
+			</div>
+			<div class="form-group">
+				      <label for="chFurniture">¿Está amueblado?</label>
+				      <p style="text-align: center">
+				      <input class="radioButton" type="radio" value="Y" name="chFurniture">Si     
+				      <input class="radioButton" type="radio" value="S" name="chFurniture">Semi
+				      <input class="radioButton" type="radio" value="N" name="chFurniture">No  
+				      <input class="radioButton" type="radio" value="T" name="chFurniture" checked="checked">Cualquiera
+				      </p>
+			</div>
+
+
+
+			<span class="btn-center">
+				    <button type="submit" id="SearchhButton" class="btn btn-success">Buscar</button>
+			</span>	
+	</fieldset>	
+	</div>
+
+	<div id="Mapa" class="currentSelection">
+		
+		<div id="map"></div>
+    </div>
+
+	
+	<div id="Lista" class="hiddenSection">
+		<div id="lista"></div>                
+    </div>
+	
+	<div id="Favoritos" class="hiddenSection">
+        <div id="listaFav"></div> 
+	</div>
+	
+	<div id="Roomies" class="hiddenSection">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="willingRent">Busco a un roomie que quiera pagar esto: </label>
+                <input placeholder="$$$"  type="number" class="form-control" id="willingRent" name="willingRent">
+                <span id="willingRentError" class="hiddenElement error">Campo obligatorio</span>
+                <br>
+                <button type="submit" id="submitRent" class="btn btn-success">Buscar</button>
+                <br><br>
+                <div id="listRoomies"></div>
+            </div>
+        </div>
+        <div class="col-xs-3"></div>
+	</div>
+    
+    </div>
+	
+  
+  <!-- Modal de crear cuenta-->
+  <div class="modal fade" id="CrearCuenta" role="dialog">
+    <div class="modal-dialog">
+      <!-- Contenido de modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Crear cuenta</h4>
+        </div>
+        <div class="modal-body">
+        	<!--<form action="/action_page.php">-->
+			    <div class="form-group">
+			      <label for="nombre">Nombre:</label>
+			      <input type="text" class="form-control" id="nombre" placeholder="Escribir nombre" name="nombre">
+			      <span id="nameError" class="hiddenElement error">Campo obligatorio</span>
+			    </div>
+			    <div class="form-group">
+			      <label for="apellido">Apellidos:</label>
+			      <input type="text" class="form-control" id="apellido" placeholder="Escribir apellidos" name="apellido">
+			      <span id="lastnameError" class="hiddenElement error">Campo obligatorio</span>
+
+			    </div>
+			    <div class="form-group">
+			      <label for="email">Correo:</label>
+			      <input type="email" class="form-control" id="email" placeholder="Escribir correo" name="email">
+			      <span id="EmailError" class="hiddenElement error">Campo obligatorio</span>
+
+			    </div>
+				<div class="form-group">
+			      <label for="telefono">Telefono:</label>
+			      <input type="text" class="form-control" id="telefono" placeholder="Escribir telefono" name="telefono">
+			      <span id="TelefonoError" class="hiddenElement error">Campo obligatorio</span>
+
+			    </div>
+                <div class="form-group">
+			      <label>Busco Pagar en renta:</label><br />
+                  <label for="MinRentToPay">Minimo:</label>
+			      <input type="number" class="form-control" id="MinRentToPay" placeholder="$$$" name="MinRentToPay" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  <label for="MaxRentToPay">Maximo:</label>
+                  <input type="number" class="form-control" id="MaxRentToPay" placeholder="$$$" name="MaxRentToPay" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+			    </div>
+			    <div class="form-group">
+			      <label for="pwd">Contraseña:</label>
+			      <input type="password" class="form-control" id="pwd" placeholder="Escribir contraseña" name="pwd">
+			      <span id="passwordError" class="hiddenElement error">Campo obligatorio</span>
+
+			    </div>
+			    <div class="form-group">
+			      <label for="pwd2">Confirmar contraseña:</label>
+			      <input type="password" class="form-control" id="pwd2" placeholder="Escribir contraseña" name="pwd2">
+			      <span id="passwordError2" class="hiddenElement error">Campo obligatorio</span>
+			    </div>
+
+			    <div class="form-group">
+			      <p id="gender"><b>Género: </b><span id="genderError" class="hiddenElement error">Campo obligatorio</span><br>
+			      <input type="radio" value="M" name="gender"> Masculino<br>
+			      <input type="radio" value="F" name="gender"> Femenino
+			      </p>
+			    </div>
+				<span class="btn-center">
+			    <button type="submit" id="submitForm1" class="btn btn-success">Crear cuenta</button>
+			    </span>
+			<!--</form> --> 
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+    <!-- Modal de iniciar sesion-->
+  <div class="modal fade" id="IniciarSesion" role="dialog">
+    <div class="modal-dialog">
+      <!-- Contenido de modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Iniciar Sesión</h4>
+        </div>
+        <div class="modal-body">
+	          <!-- <form action="/action_page.php">-->
+			    <div class="form-group">
+			      <label for="emaillogin">Correo:</label>
+			      <input type="email" class="form-control" id="emaillogin" placeholder="Escribir correo" name="email">
+			      <span id="correologinerror" class="hiddenElement error">Por favor escriba su correo.</span>
+			    </div>
+			    <div class="form-group">
+			      <label for="pwdlogin">Contraseña:</label>
+			      <input type="password" class="form-control" id="pwdlogin" placeholder="Escribir contraseña" name="pwd">
+			      <span id="pwdloginerror" class="hiddenElement error">Por favor escriba su contraseña.</span>
+			    </div>
+			    <div class="form-group">
+			    <input type="checkbox" name="rememberMe" id="rememberMe"/> Recuerdame<br>
+			    </div>
+			    <button type="submit" id="submitForm2" class="btn btn-success">Iniciar sesión</button>
+			 <!--</form>-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>  
+    </div>
+  </div>
+	
+	<footer class= "dark-primary-color">
+            <div class="row">
+                <div class= "col-xs-6">
+                    <ul class="social-links">
+                        <li><a href="#"><i class="ion-social-facebook icon"></i></a></li>
+                        <li><a href="#"><i class="ion-social-twitter icon"></i></a></li>
+                        <li><a href="#"><i class="ion-social-instagram icon"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6">
+                    <p class="copyright">Copyright</p>
+                </div>
+            </div>
+  </footer>
+    
+
+  <div id="myModal" class="modal">
+
+  <div class="modal-content2">
+    <div class="modal-header">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Información</h2>
+    </div>
+    <div class="modal-body">
+      <p id="modalText">Some text in the Modal Body</p>
+      
+    </div>
+    
+  </div>
+
+</div> 
+	
+</body>
+
+</html>
